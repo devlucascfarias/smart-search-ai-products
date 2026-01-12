@@ -26,7 +26,7 @@ llm = ChatGoogleGenerativeAI(
 
 app = FastAPI(
     title="Smart Search Products (LangChain)",
-    description="Assistente de compras inteligente com busca semântica."
+    description="Intelligent shopping assistant with semantic search."
 )
 
 @app.get("/")
@@ -35,17 +35,17 @@ async def health_check():
 
 @app.post("/vector-store/rebuild")
 async def rebuild_vector_store():
-    """Reconstrói o vector store do zero (use apenas quando necessário)"""
+    """Rebuilds the vector store from scratch (use only when necessary)"""
     try:
         vector_store = get_vector_store()
         vector_store.rebuild_store()
-        return {"status": "success", "message": "Vector store reconstruído com sucesso"}
+        return {"status": "success", "message": "Vector store rebuilt successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/vector-store/search")
 async def semantic_search(query: str, category: Optional[str] = None, limit: int = 20):
-    """Busca semântica direta no vector store"""
+    """Direct semantic search in the vector store"""
     try:
         vector_store = get_vector_store()
         results = vector_store.search_products(query, category=category, k=limit)
@@ -71,10 +71,10 @@ class PromptRequest(BaseModel):
 @app.post("/generate")
 async def generate_text(request: PromptRequest):
     try:
-        """ Análise de Intenção """
+        # Intent Analysis
         parser = JsonOutputParser(pydantic_object=AnalysisResult)
         
-        # Carrega prompt de análise de categoria de arquivo externo
+        # Load category analysis prompt from external file
         analysis_template = prompt_manager.load_prompt("category_analysis")
         
         analysis_prompt = PromptTemplate(
@@ -92,7 +92,7 @@ async def generate_text(request: PromptRequest):
         max_price = request.budget or analysis_data.get("budget")
         relevant_categories = [cat for cat in analysis_data.get("categories", []) if cat in ALL_CATEGORIES]
 
-        """ Busca de Dados Reais """
+        # Real Data Search
         context_data = ""
         if relevant_categories:
             for cat in relevant_categories[:5]: 
@@ -100,21 +100,21 @@ async def generate_text(request: PromptRequest):
                 if summary and "NADA_ENCONTRADO" not in summary:
                     context_data += summary + "\n"
         
-        # Se não encontrou nada, retorna mensagem amigável
+        # If nothing found, return friendly message
         if not context_data or context_data.strip() == "":
             return {
-                "response": f"Desculpe, não encontramos produtos disponíveis para **{request.prompt}** no momento. Tente refinar sua busca ou explorar nossas categorias.",
+                "response": f"Sorry, we couldn't find available products for **{request.prompt}** at the moment. Try refining your search or explore our categories.",
                 "detected_budget": max_price,
                 "queried_categories": relevant_categories
             }
         
-        """ Geração da Resposta Final """
-        budget_info = f" (com orçamento de até R$ {max_price})" if max_price else ""
+        # Final Response Generation
+        budget_info = f" (with budget up to R$ {max_price})" if max_price else ""
         
         from products import translate_category
-        relevant_cat_translated = translate_category(relevant_categories[0]) if relevant_categories else "nossas categorias"
+        relevant_cat_translated = translate_category(relevant_categories[0]) if relevant_categories else "our categories"
 
-        # Carrega prompt de geração de resposta de arquivo externo
+        # Load response generation prompt from external file
         response_template = prompt_manager.load_prompt("response_generation")
         
         final_prompt = PromptTemplate(
@@ -138,7 +138,7 @@ async def generate_text(request: PromptRequest):
         }
     
     except Exception as e:
-        print(f"Erro LangChain: {e}")
+        print(f"LangChain Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/categories")
@@ -151,7 +151,7 @@ async def get_categories():
 async def get_products_by_category(category: str, page: int = 1, page_size: int = 20):
     df = get_df_by_category(category)
     if df is None:
-        raise HTTPException(status_code=404, detail="Categoria não encontrada")
+        raise HTTPException(status_code=404, detail="Category not found")
     
     total_products = len(df)
     total_pages = (total_products + page_size - 1) // page_size

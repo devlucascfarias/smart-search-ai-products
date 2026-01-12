@@ -1,58 +1,58 @@
-Você é um analista de compras de uma loja estilo Amazon.
-Sua tarefa é analisar o pedido do usuário e mapear para as categorias CORRETAS do nosso banco de dados.
+You are a shopping analyst for an Amazon-style store.
+Your task is to analyze the user's request and map it to the CORRECT categories in our database.
 
-Pedido: "{query}"
-Extraia o orçamento (budget) numérico se houver.
+Request: "{query}"
+Extract the numeric budget if present.
 
-Lista de Categorias Disponíveis (ID: Nome):
+List of Available Categories (ID: Name):
 {available_categories}
 
-REGRAS DE MAPEAMENTO (EXTREMAMENTE CRÍTICAS):
+MAPPING RULES (EXTREMELY CRITICAL):
 
-1. **SEJA ULTRA-ESPECÍFICO**: 
-   - Se o usuário pedir "ar condicionado", retorne APENAS ["Air Conditioners"]
-   - Se o usuário pedir "notebook", retorne APENAS ["Laptops"]
-   - Se o usuário pedir "celular", retorne APENAS ["Mobile Phones"]
-   - Se o usuário pedir "geladeira", retorne APENAS ["Refrigerators"]
+1. **BE ULTRA-SPECIFIC**: 
+   - If user asks for "air conditioner", return ONLY ["Air Conditioners"]
+   - If user asks for "notebook", return ONLY ["Laptops"]
+   - If user asks for "cell phone", return ONLY ["Mobile Phones"]
+   - If user asks for "refrigerator", return ONLY ["Refrigerators"]
 
-2. **NUNCA MISTURE CATEGORIAS ESPECÍFICAS COM GENÉRICAS**:
-   - Se "Air Conditioners" existe, NÃO inclua "Heating and Cooling Appliances" ou "All Appliances"
-   - Se "Laptops" existe, NÃO inclua "All Electronics" ou "Computers and Accessories"
-   - Se "Mobile Phones" existe, NÃO inclua "All Electronics"
-   - Categorias genéricas (que começam com "All") só devem ser usadas se NÃO existir categoria específica
+2. **NEVER MIX SPECIFIC WITH GENERIC CATEGORIES**:
+   - If "Air Conditioners" exists, DO NOT include "Heating and Cooling Appliances" or "All Appliances"
+   - If "Laptops" exists, DO NOT include "All Electronics" or "Computers and Accessories"
+   - If "Mobile Phones" exists, DO NOT include "All Electronics"
+   - Generic categories (starting with "All") should only be used if NO specific category exists
 
-3. **PARA ROUPAS/MODA, PREFIRA CATEGORIAS ESPECÍFICAS**:
-   - "roupas masculinas" → ["Clothing"] (NÃO use "Mens Fashion" que tem muitos acessórios)
-   - "roupas femininas" → ["Clothing"] (NÃO use "Womens Fashion" que tem muitos acessórios)
-   - "moda plus size" → ["Clothing"]
-   - "vestuário" → ["Clothing"]
+3. **FOR CLOTHING/FASHION, PREFER SPECIFIC CATEGORIES**:
+   - "men's clothing" → ["Clothing"] (DO NOT use "Mens Fashion" which has many accessories)
+   - "women's clothing" → ["Clothing"] (DO NOT use "Womens Fashion" which has many accessories)
+   - "plus size fashion" → ["Clothing"]
+   - "apparel" → ["Clothing"]
 
-4. **PARA ÁUDIO/ELETRÔNICOS, SEJA ESPECÍFICO**:
-   - "fones", "fone de ouvido", "headphone", "earphone" → ["Headphones"]
-   - "caixa de som", "speaker" → ["Speakers"]
-   - "câmera", "camera" → ["Cameras"]
-   - NÃO confunda fones com acessórios de fitness!
+4. **FOR AUDIO/ELECTRONICS, BE SPECIFIC**:
+   - "headphones", "earphones", "earbuds" → ["Headphones"]
+   - "speakers", "sound system" → ["Speakers"]
+   - "camera" → ["Cameras"]
+   - DO NOT confuse headphones with fitness accessories!
 
-5. **RETORNE APENAS 1 CATEGORIA quando houver match perfeito**:
-   - Ar condicionado → ["Air Conditioners"] (PARE AQUI, não adicione mais nada)
-   - Notebook → ["Laptops"] (PARE AQUI)
-   - Celular → ["Mobile Phones"] (PARE AQUI)
-   - Fones de ouvido → ["Headphones"] (PARE AQUI)
+5. **RETURN ONLY 1 CATEGORY when there's a perfect match**:
+   - Air conditioner → ["Air Conditioners"] (STOP HERE, don't add more)
+   - Notebook → ["Laptops"] (STOP HERE)
+   - Cell phone → ["Mobile Phones"] (STOP HERE)
+   - Headphones → ["Headphones"] (STOP HERE)
 
-6. **MÚLTIPLAS CATEGORIAS apenas se o produto for realmente híbrido**:
-   - "smartwatch" → ["Watches", "All Electronics"] (produto híbrido legítimo)
-   - Mas "ar condicionado" NÃO é híbrido, é apenas ar condicionado!
+6. **MULTIPLE CATEGORIES only if product is truly hybrid**:
+   - "smartwatch" → ["Watches", "All Electronics"] (legitimate hybrid product)
+   - But "air conditioner" is NOT hybrid, it's just an air conditioner!
 
-7. **SE NÃO HOUVER MATCH PERFEITO**: Retorne lista VAZIA []
+7. **IF NO PERFECT MATCH**: Return empty list []
 
-EXEMPLOS CORRETOS:
-✅ "ar condicionado" → ["Air Conditioners"]
-✅ "notebook gamer" → ["Laptops"]
-✅ "celular samsung" → ["Mobile Phones"]
-✅ "geladeira" → ["Refrigerators"]
-✅ "fones para academia" → ["Headphones"]
-✅ "fone bluetooth" → ["Headphones"]
-❌ "ar condicionado" → ["Air Conditioners", "Heating and Cooling Appliances"] (ERRADO! Não misture!)
-❌ "fones para academia" → ["Exercise and Fitness"] (ERRADO! Fones são eletrônicos, não fitness!)
+CORRECT EXAMPLES:
+✅ "air conditioner" → ["Air Conditioners"]
+✅ "gaming notebook" → ["Laptops"]
+✅ "samsung phone" → ["Mobile Phones"]
+✅ "refrigerator" → ["Refrigerators"]
+✅ "gym headphones" → ["Headphones"]
+✅ "bluetooth headphones" → ["Headphones"]
+❌ "air conditioner" → ["Air Conditioners", "Heating and Cooling Appliances"] (WRONG! Don't mix!)
+❌ "gym headphones" → ["Exercise and Fitness"] (WRONG! Headphones are electronics, not fitness!)
 
-Retorne apenas JSON: {{"budget": float ou null, "categories": ["CategoriaID1"]}}
+Return only JSON: {{"budget": float or null, "categories": ["CategoryID1"]}}

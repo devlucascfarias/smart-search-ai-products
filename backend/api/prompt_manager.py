@@ -1,13 +1,13 @@
 """
-Gerenciador de Prompts para o Smart Search AI
-Carrega e gerencia prompts externos para melhor manutenibilidade
+Prompt Manager for Smart Search AI
+Loads and manages external prompts for better maintainability
 """
 import os
 from pathlib import Path
 from typing import Dict
 
 class PromptManager:
-    """Gerencia prompts externos para o sistema de busca inteligente"""
+    """Manages external prompts for the intelligent search system"""
     
     def __init__(self, prompts_dir: str = None):
         if prompts_dir is None:
@@ -17,16 +17,16 @@ class PromptManager:
     
     def load_prompt(self, prompt_name: str) -> str:
         """
-        Carrega um prompt do arquivo.
+        Loads a prompt from file.
         
         Args:
-            prompt_name: Nome do arquivo de prompt (sem extensão)
+            prompt_name: Name of the prompt file (without extension)
             
         Returns:
-            Conteúdo do prompt
+            Prompt content
             
         Raises:
-            FileNotFoundError: Se o arquivo de prompt não existir
+            FileNotFoundError: If the prompt file doesn't exist
         """
         if prompt_name in self._cache:
             return self._cache[prompt_name]
@@ -47,19 +47,19 @@ class PromptManager:
         return content
     
     def list_available_prompts(self) -> list:
-        """Lista todos os prompts disponíveis"""
+        """Lists all available prompts"""
         if not self.prompts_dir.exists():
             return []
         return [f.stem for f in self.prompts_dir.glob("*.txt")]
     
     def reload_prompt(self, prompt_name: str) -> str:
-        """Recarrega um prompt do arquivo, ignorando o cache"""
+        """Reloads a prompt from file, ignoring cache"""
         if prompt_name in self._cache:
             del self._cache[prompt_name]
         return self.load_prompt(prompt_name)
     
     def clear_cache(self):
-        """Limpa o cache de prompts"""
+        """Clears the prompt cache"""
         self._cache.clear()
 
 

@@ -1,6 +1,6 @@
 """
-Script para inicializar o Vector Store
-Execute este script uma vez para criar o banco de dados vetorial
+Script to initialize the Vector Store
+Run this script once to create the vector database
 """
 import os
 import sys

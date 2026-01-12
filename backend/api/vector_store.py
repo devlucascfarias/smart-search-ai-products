@@ -1,6 +1,6 @@
 """
-Vector Store Manager para Smart Search AI
-Gerencia embeddings e busca semântica de produtos usando Chroma DB
+Vector Store Manager for Smart Search AI
+Manages embeddings and semantic search of products using Chroma DB
 """
 import os
 import pandas as pd
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class VectorStoreManager:
-    """Gerencia o vector store de produtos para busca semântica"""
+    """Manages the vector store of products for semantic search"""
     
     def __init__(self, persist_directory: str = None):
         if persist_directory is None:
@@ -36,7 +36,7 @@ class VectorStoreManager:
         self._load_or_create_store()
     
     def _load_or_create_store(self):
-        """Carrega vector store existente ou cria um novo"""
+        """Loads existing vector store or creates a new one"""
         try:
             self.vector_store = Chroma(
                 persist_directory=str(self.persist_directory),
@@ -54,7 +54,7 @@ class VectorStoreManager:
         self._create_new_store()
     
     def _create_new_store(self):
-        """Cria um novo vector store com todos os produtos"""
+        """Creates a new vector store with all products"""
         import time
         
         documents = []
@@ -71,7 +71,7 @@ class VectorStoreManager:
                 df_sample = df.head(50)
                 
                 for _, row in df_sample.iterrows():
-                    product_text = f"{row['name']} - Categoria: {category_translated}"
+                    product_text = f"{row['name']} - Category: {category_translated}"
                     
                     doc = Document(
                         page_content=product_text,
@@ -88,7 +88,7 @@ class VectorStoreManager:
                     )
                     documents.append(doc)
                 
-                if i % 20 == 0: 
+                if i % 20 == 0:
                     logger.info(f"Processed {i}/{len(ALL_CATEGORIES)} categories")
                 
             except Exception as e:
@@ -97,7 +97,6 @@ class VectorStoreManager:
         
         logger.info(f"Total documents: {len(documents)}")
         logger.info("Generating embeddings in batches (respecting rate limits)")
-        
         
         batch_size = 500
         total_batches = (len(documents) + batch_size - 1) // batch_size
@@ -119,7 +118,6 @@ class VectorStoreManager:
                 self.vector_store.add_documents(batch_docs)
                 logger.info(f"Batch {batch_num + 1} completed successfully")
                 
-                # Delay entre lotes para respeitar rate limits
                 if batch_num < total_batches - 1:
                     delay = 20
                     logger.info(f"Waiting {delay}s before next batch")
@@ -146,15 +144,15 @@ class VectorStoreManager:
         k: int = 20
     ) -> List[Dict]:
         """
-        Busca produtos usando similaridade semântica
+        Search products using semantic similarity
         
         Args:
-            query: Texto da busca do usuário
-            category: Categoria para filtrar (opcional)
-            k: Número de resultados
+            query: User search text
+            category: Category to filter (optional)
+            k: Number of results
             
         Returns:
-            Lista de produtos relevantes
+            List of relevant products
         """
         if self.vector_store is None:
             return []
@@ -186,7 +184,7 @@ class VectorStoreManager:
         return products
     
     def rebuild_store(self):
-        """Reconstrói o vector store do zero"""
+        """Rebuilds the vector store from scratch"""
         logger.info("Rebuilding vector store")
         
         if self.persist_directory.exists():
@@ -199,7 +197,7 @@ class VectorStoreManager:
 vector_store_manager = None
 
 def get_vector_store() -> VectorStoreManager:
-    """Retorna a instância global do vector store (lazy loading)"""
+    """Returns the global vector store instance (lazy loading)"""
     global vector_store_manager
     if vector_store_manager is None:
         vector_store_manager = VectorStoreManager()

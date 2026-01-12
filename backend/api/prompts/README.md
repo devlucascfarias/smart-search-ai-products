@@ -1,62 +1,63 @@
-# Prompts do Smart Search AI
+# Smart Search AI Prompts
 
-Este diretório contém os prompts externos usados pelo sistema de busca inteligente.
+This directory contains external prompts used by the intelligent search system.
 
-## Estrutura
+## Structure
 
-- `category_analysis.txt` - Prompt para análise e mapeamento de categorias
-- `response_generation.txt` - Prompt para geração da resposta final ao usuário
+- `category_analysis.txt` - Prompt for category analysis and mapping
+- `response_generation.txt` - Prompt for final response generation to user
 
-## Vantagens desta Abordagem
+## Advantages of This Approach
 
-### ✅ **Manutenibilidade**
-- Prompts podem ser editados sem mexer no código Python
-- Fácil de versionar e fazer rollback de mudanças
-- Separação clara entre lógica e conteúdo
+### ✅ **Maintainability**
+- Prompts can be edited without touching Python code
+- Easy to version and rollback changes
+- Clear separation between logic and content
 
-### ✅ **Colaboração**
-- Product Managers podem editar prompts diretamente
-- Não precisa conhecer Python para ajustar comportamento da IA
-- Facilita A/B testing de diferentes versões de prompts
+### ✅ **Collaboration**
+- Product Managers can edit prompts directly
+- No need to know Python to adjust AI behavior
+- Facilitates A/B testing of different prompt versions
 
 ### ✅ **Performance**
-- Prompts são carregados uma vez e mantidos em cache
-- Reduz overhead de parsing de strings grandes
-- Facilita implementação de prompt caching da API
+- Prompts are loaded once and kept in cache
+- Reduces overhead of parsing large strings
+- Facilitates implementation of API prompt caching
 
 ### ✅ **Debugging**
-- Fácil identificar qual prompt está causando problemas
-- Logs podem referenciar arquivos específicos
-- Facilita testes isolados de cada prompt
+- Easy to identify which prompt is causing issues
+- Logs can reference specific files
+- Facilitates isolated testing of each prompt
 
-## Como Usar
+## How to Use
 
 ```python
 from prompt_manager import prompt_manager
 
-# Carregar um prompt
+# Load a prompt
 template = prompt_manager.load_prompt("category_analysis")
 
-# Listar prompts disponíveis
+# List available prompts
 available = prompt_manager.list_available_prompts()
 
-# Recarregar um prompt (útil em desenvolvimento)
+# Reload a prompt (useful in development)
 template = prompt_manager.reload_prompt("category_analysis")
 
-# Limpar cache (força reload de todos os prompts)
+# Clear cache (forces reload of all prompts)
 prompt_manager.clear_cache()
 ```
 
-## Boas Práticas
+## Best Practices
 
-1. **Versionamento**: Sempre commitar mudanças de prompts com mensagens descritivas
-2. **Testes**: Testar mudanças de prompts antes de fazer deploy
-3. **Documentação**: Documentar mudanças significativas neste README
-4. **Backup**: Manter versões anteriores de prompts que funcionaram bem
+1. **Versioning**: Always commit prompt changes with descriptive messages
+2. **Testing**: Test prompt changes before deploying
+3. **Documentation**: Document significant changes in this README
+4. **Backup**: Keep previous versions of prompts that worked well
 
-## Histórico de Mudanças
+## Change History
 
 ### 2026-01-12
-- ✅ Criação inicial dos prompts externos
-- ✅ Migração de prompts inline para arquivos `.txt`
-- ✅ Implementação do `PromptManager` com cache
+- ✅ Initial creation of external prompts
+- ✅ Migration from inline prompts to `.txt` files
+- ✅ Implementation of `PromptManager` with cache
+- ✅ Translation of all prompts to English

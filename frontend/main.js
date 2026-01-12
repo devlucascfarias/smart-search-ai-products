@@ -253,7 +253,7 @@ async function handleAISearch() {
     const suggestedProducts = itemMatches.map(match => {
       const content = match[1];
       const name = (content.match(/NOME:\s*(.*)/) || [])[1] || 'Produto';
-      const price = (content.match(/PRECO:\s*(.*)/) || [])[1] || 'R$ --';
+      const price = (content.match(/PRICE:\s*(.*)/) || [])[1] || 'R$ --';
       const rating = (content.match(/RATING:\s*(.*)/) || [])[1] || '4.0';
       const imageUrl = (content.match(/!\[.*?\]\((.*?)\)/) || [])[1] || '';
 
