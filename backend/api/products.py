@@ -100,7 +100,15 @@ CATEGORY_TRANSLATIONS = {
     "Strollers and Prams": "Carrinhos de Bebê",
     "TV, Video and DVD": "TV e Vídeo",
     "Women's Accessories": "Acessórios Femininos",
-    "Women's Shoes": "Calçados Femininos"
+    "Women's Shoes": "Calçados Femininos",
+    "Refrigerators": "Geladeiras",
+    "Washing Machines": "Máquinas de Lavar",
+    "Televisions": "Televisões",
+    "Cameras": "Câmeras",
+    "Headphones": "Fones de Ouvido",
+    "Speakers": "Alto-falantes",
+    "Heating and Cooling Appliances": "Aquecimento e Refrigeração",
+    "Personal Care Appliances": "Aparelhos de Cuidados Pessoais"
 }
 
 def translate_category(cat: str) -> str:
@@ -137,24 +145,28 @@ def clean_price(price_str: str) -> float:
     except:
         return 0.0
 
-def get_products_summary(category: str, limit: int = 10, max_price: float = None) -> str:
+def get_products_summary(category: str, limit: int = 18, max_price: float = None, search_query: str = None) -> str:
     df = get_df_by_category(category)
     if df is None:
         return f"Categoria '{category}' não encontrada ou erro ao carregar."
     
+    filtered_df = df.copy()
+    
+    # 1. Filtro de Preço
     if max_price:
         max_price_inr = max_price / INR_TO_BRL
-        filtered_df = df[df['actual_price'].apply(clean_price) <= max_price_inr]
-        if filtered_df.empty:
-            return f"Nenhum produto em '{category}' abaixo de R$ {max_price:.2f}.\n"
-        products = filtered_df.head(limit)
-    else:
-        products = df.head(limit)
+        filtered_df = filtered_df[filtered_df['actual_price'].apply(clean_price) <= max_price_inr]
+
+    if filtered_df.empty:
+        return "NADA_ENCONTRADO"
     
-    summary = f"Produtos na categoria '{category}':\n"
+    # Retorna mais produtos (30 ao invés de 18) para dar à IA mais opções para filtrar
+    products = filtered_df.head(30)
+    
+    summary = f"Produtos Reais Disponíveis na categoria '{category}':\n"
     for _, row in products.iterrows():
         price_inr = clean_price(row.get('actual_price', '0'))
         price_brl = price_inr * INR_TO_BRL
-        summary += f"- Nome: {row['name']} | Preço em Reais: R$ {price_brl:.2f} | Avaliação: {row.get('ratings', 'N/A')} | Imagem: {row.get('image', 'N/A')}\n"
+        summary += f"- Nome: {row['name']} | PRECO: R$ {price_brl:.2f} | Avaliação: {row.get('ratings', 'N/A')} | Imagem: {row.get('image', 'N/A')}\n"
     
     return summary

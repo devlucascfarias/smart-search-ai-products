@@ -28,3 +28,6 @@ Thumbs.db
 # Data
 # (Descomente abaixo se não quiser subir os CSVs grandes)
 # backend/data/*.csv
+
+# Vector Database
+backend/api/chroma_db/

@@ -57,6 +57,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function showReport() {
+  ++currentRequestId; 
   heroSection.classList.add('hidden');
   aiSection.classList.add('hidden');
   productGrid.classList.add('hidden');
@@ -105,7 +106,10 @@ async function loadFeatured() {
   selectCategory('Air Conditioners', featuredItem); 
 }
 
+let currentRequestId = 0;
+
 async function selectCategory(category, element = null, page = 1) {
+  const requestId = ++currentRequestId;
   currentCategory = category;
   currentPage = page;
 
@@ -134,21 +138,33 @@ async function selectCategory(category, element = null, page = 1) {
     const response = await fetch(`${API_URL}/products/${encodeURIComponent(category)}?page=${page}&page_size=20`);
     const data = await response.json();
     
+    // Only update if this is still the most recent request
+    if (requestId !== currentRequestId) return;
+
     totalPages = data.total_pages;
     renderProducts(data.products);
     updatePaginationUI();
   } catch (error) {
-    productGrid.innerHTML = `<p style="color: red;">Erro ao carregar produtos desta categoria.</p>`;
+    if (requestId === currentRequestId) {
+      productGrid.innerHTML = `<p style="color: red;">Erro ao carregar produtos desta categoria.</p>`;
+    }
   } finally {
-    loader.classList.add('hidden');
+    if (requestId === currentRequestId) {
+      loader.classList.add('hidden');
+    }
   }
 }
 
 function updatePaginationUI() {
-  if (totalPages <= 1) {
+  // Never show pagination if the report or AI search results are visible
+  const isReportVisible = !reportSection.classList.contains('hidden');
+  const isAIVisible = !aiSection.classList.contains('hidden');
+  
+  if (totalPages <= 1 || isReportVisible || isAIVisible) {
     paginationContainer.classList.add('hidden');
     return;
   }
+  
   paginationContainer.classList.remove('hidden');
   pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
   prevPageBtn.disabled = currentPage === 1;
@@ -173,6 +189,7 @@ async function handleAISearch() {
   const query = searchInput.value.trim();
   if (!query) return;
 
+  ++currentRequestId; // Cancel any pending category loads
   productGrid.innerHTML = '';
   aiSection.classList.add('hidden');
   reportSection.classList.add('hidden');
@@ -261,6 +278,7 @@ async function handleAISearch() {
     console.error(error);
   } finally {
     loader.classList.add('hidden');
+    paginationContainer.classList.add('hidden'); // Garante que paginação fique oculta
   }
 }
 
