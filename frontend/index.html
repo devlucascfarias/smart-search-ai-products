@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,7 @@
       <a href="/" class="nav-logo" id="logoBtn">Smart Search AI</a>
       
       <div class="nav-links">
-        <button id="reportBtn" class="nav-link-btn">Relatório Técnico do Projeto</button>
+        <button id="reportBtn" class="nav-link-btn">Project Technical Report</button>
         <a href="https://github.com/devlucascfarias" target="_blank" class="nav-item" title="GitHub">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
         </a>
@@ -26,10 +26,10 @@
 
     <div class="container">
       <aside class="sidebar">
-        <h3>Categorias</h3>
+        <h3>Categories</h3>
         <ul id="categoryList" class="category-list">
-          <li class="category-item active" id="featuredItem">Destaques</li>
-          <!-- Categorias carregadas via JS -->
+          <li class="category-item active" id="featuredItem">Featured</li>
+          <!-- Categories loaded via JS -->
         </ul>
       </aside>
 
@@ -38,30 +38,30 @@
           <div class="ai-header">
             <div style="display: flex; align-items: center; gap: 10px;">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"/><path d="M12,17a1,1,0,1,0-1-1A1,1,0,0,0,12,17Z"/><path d="M12,7a3,3,0,0,0-3,3,1,1,0,0,0,2,0,1,1,0,0,1,2,0,1,1,0,0,1-1,1,1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V12.75A3,3,0,0,0,12,7Z"/></svg>
-              Sugestões Inteligentes
+              Smart Suggestions
             </div>
-            <button id="newSearchBtn" class="new-search-btn">Fazer outra Busca Inteligente</button>
+            <button id="newSearchBtn" class="new-search-btn">Make Another Smart Search</button>
           </div>
           <div id="aiResponseText" class="ai-message"></div>
         </section>
 
         <section id="heroSection" class="hero">
           <div class="hero-info">
-            <h2>Busca Inteligente com NLP e RAG</h2>
-            <p>Foi utilizado técnicas de <strong>Processamento de Linguagem Natural (NLP)</strong> para transformar sua busca em uma experiência inteligente. Encontre exatamente o que você precisa por meio de pesquisas semânticas. Essa não é uma página real de vendas. Se trata de um projeto de pesquisa para aprendizado.</p>
+            <h2>Smart Search with NLP and RAG</h2>
+            <p><strong>Natural Language Processing (NLP)</strong> techniques were used to transform your search into an intelligent experience. Find exactly what you need through semantic searches. This is not a real sales page. It's a research project for learning purposes.</p>
           </div>
           
           <div class="hero-actions">
             <div class="hero-search">
-              <input type="text" id="searchInput" placeholder="O que você deseja encontrar hoje? (ex: perfumes masculinos marcantes)" />
+              <input type="text" id="searchInput" placeholder="What would you like to find today? (e.g., striking men's perfumes)" />
               <button id="searchBtn">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </button>
             </div>
             <div class="search-suggestions">
-              <span class="suggestion-pill">Perfumes marcantes</span>
-              <span class="suggestion-pill">Ar condicionado silencioso</span>
-              <span class="suggestion-pill">Fones para academia</span>
+              <span class="suggestion-pill">Striking perfumes</span>
+              <span class="suggestion-pill">Silent air conditioner</span>
+              <span class="suggestion-pill">Gym headphones</span>
             </div>
           </div>
         </section>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="report-card">
-              <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Engenharia de Agentes</h3>
+              <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> Agent Engineering</h3>
               <ul>
                 <li><strong>Agente de Intenção:</strong> Um estágio via LLM analisa a query para identificar categorias, extrair orçamentos e filtrar ruído.</li>
                 <li><strong>RAG (Retrieval-Augmented Generation):</strong> O assistente consulta um banco de dados real antes de gerar recomendações, evitando alucinações.</li>
@@ -87,7 +87,7 @@
             </div>
 
             <div class="report-card">
-              <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> Stack Tecnológica</h3>
+              <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> Tech Stack</h3>
               <div class="stack-container">
                 <div class="stack-group">
                   <h4>Frontend</h4>
@@ -116,15 +116,15 @@
           </div>
         </section>
 
-        <h2 id="sectionTitle" class="section-title">Produtos em Destaque</h2>
+        <h2 id="sectionTitle" class="section-title">Featured Products</h2>
         
         <div id="loader" class="loader hidden">
           <div class="spinner"></div>
-          <p>Buscando os melhores produtos...</p>
+          <p>Searching for the best products...</p>
         </div>
 
         <div id="productGrid" class="product-grid">
-          <!-- Produtos renderizados aqui -->
+          <!-- Products rendered here -->
         </div>
 
         <div id="pagination" class="pagination-container hidden">
@@ -139,7 +139,7 @@
       <a href="/" class="nav-logo" id="logoBtnFooter">Smart Search AI</a>
       
       <div class="nav-links">
-        <button id="reportBtnFooter" class="nav-link-btn">Relatório</button>
+        <button id="reportBtnFooter" class="nav-link-btn">Report</button>
         <a href="https://github.com/devlucascfarias" target="_blank" class="nav-item" title="GitHub">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
         </a>
