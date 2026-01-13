@@ -94,6 +94,7 @@ def get_products_summary(category: str, limit: int = 18, max_price: float = None
     summary = f"Real Products Available in category '{category}':\n"
     for _, row in products.iterrows():
         price = row.get('actual_price', '0')
-        summary += f"- Name: {row['name']} | PRICE: {price} | Rating: {row.get('ratings', 'N/A')} | Image: {row.get('image', 'N/A')}\n"
+        # Using clear labels and avoiding pipes which cause extraction issues in the LLM
+        summary += f"- PRODUCT_NAME: {row['name']} PRODUCT_PRICE: {price} PRODUCT_RATING: {row.get('ratings', 'N/A')} PRODUCT_IMAGE: {row.get('image', 'N/A')}\n"
     
     return summary

@@ -53,10 +53,10 @@ CASE B: IF "NADA_ENCONTRADO" or if NO product is relevant:
 
 MANDATORY FORMAT FOR EACH PRODUCT:
 [ITEM]
-NOME: [copy exact name from context]
-PRICE: [copy exact price from context, e.g., ₹1,234]
-RATING: [copy exact rating from context]
-IMAGEM: ![product](image_url)
+NOME: [copy exact PRODUCT_NAME from context]
+PRICE: [copy exact PRODUCT_PRICE from context, e.g., ₹1,234]
+RATING: [copy exact PRODUCT_RATING from context]
+IMAGEM: ![product](PRODUCT_IMAGE)
 [/ITEM]
 
 CORRECT FILTERING EXAMPLE:

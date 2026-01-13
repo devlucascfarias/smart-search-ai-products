@@ -252,10 +252,29 @@ async function handleAISearch() {
 
     const suggestedProducts = itemMatches.map(match => {
       const content = match[1];
-      const name = (content.match(/NOME:\s*(.*)/) || [])[1] || 'Produto';
-      const price = (content.match(/PRICE:\s*(.*)/) || [])[1] || '--';
-      const rating = (content.match(/RATING:\s*(.*)/) || [])[1] || '4.0';
-      const imageUrl = (content.match(/!\[.*?\]\((.*?)\)/) || [])[1] || '';
+      
+      // Improved extraction using more specific regex and cleaning
+      const nameMatch = content.match(/NOME:\s*(.*?)(?:\n|$)/);
+      const priceMatch = content.match(/PRICE:\s*(.*?)(?:\n|$)/);
+      const ratingMatch = content.match(/RATING:\s*(.*?)(?:\n|$)/);
+      const imageMatch = content.match(/!\[.*?\]\((.*?)\)/);
+
+      const name = nameMatch ? nameMatch[1].trim() : 'Produto';
+      let price = priceMatch ? priceMatch[1].trim() : '--';
+      let rating = ratingMatch ? ratingMatch[1].trim() : '4.0';
+      
+      // Try to get URL from Markdown format, fallback to raw URL if IMAGEM line exists
+      let imageUrl = '';
+      if (imageMatch) {
+        imageUrl = imageMatch[1].trim();
+      } else {
+        const rawImageMatch = content.match(/IMAGEM:\s*(https?:\/\/\S+)/);
+        imageUrl = rawImageMatch ? rawImageMatch[1].trim() : '';
+      }
+
+      // Clean up price/rating if they still contain garbage pipes from older LLM responses
+      if (price.includes('|')) price = price.split('|')[0].trim();
+      if (rating.includes('|')) rating = rating.split('|')[0].trim();
 
       return {
         name,
