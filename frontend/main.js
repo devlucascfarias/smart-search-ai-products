@@ -130,7 +130,7 @@ async function selectCategory(category, element = null, page = 1) {
   heroSection.classList.remove('hidden');
   paginationContainer.classList.add('hidden');
   productGrid.classList.remove('hidden');
-  productGrid.innerHTML = '';
+  renderSkeletons(8); // Show skeletons while loading
   loader.classList.remove('hidden');
   sectionTitle.classList.remove('hidden');
 
@@ -146,7 +146,7 @@ async function selectCategory(category, element = null, page = 1) {
     updatePaginationUI();
   } catch (error) {
     if (requestId === currentRequestId) {
-      productGrid.innerHTML = `<p style="color: red;">Erro ao carregar produtos desta categoria.</p>`;
+      productGrid.innerHTML = `<p style="color: red; padding: 2rem; text-align: center;">Erro ao carregar produtos desta categoria.</p>`;
     }
   } finally {
     if (requestId === currentRequestId) {
@@ -195,10 +195,9 @@ async function handleAISearch() {
   reportSection.classList.add('hidden');
   heroSection.classList.add('hidden');
   paginationContainer.classList.add('hidden');
-  loader.classList.remove('hidden');
-  paginationContainer.classList.add('hidden');
-  
   sectionTitle.classList.add('hidden');
+  renderSkeletons(4); // Fewer skeletons for AI suggestions
+  loader.classList.remove('hidden');
 
   try {
     const response = await fetch(`${API_URL}/generate`, {
@@ -219,6 +218,7 @@ async function handleAISearch() {
     let cleanMessage = rawResponse
       .replace(itemRegex, '')
       .replace(filterRegex, '')
+      .replace(/NOT_FOUND/g, '')
       .trim();
 
     cleanMessage = cleanMessage
@@ -297,7 +297,32 @@ async function handleAISearch() {
     console.error(error);
   } finally {
     loader.classList.add('hidden');
-    paginationContainer.classList.add('hidden'); // Garante que paginação fique oculta
+    // If no products were rendered by AI search, clear the skeletons
+    if (productGrid.querySelectorAll('.is-loading').length > 0) {
+      productGrid.innerHTML = '';
+    }
+    paginationContainer.classList.add('hidden'); 
+  }
+}
+
+function renderSkeletons(count = 8) {
+  productGrid.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const card = document.createElement('div');
+    card.className = 'product-card is-loading';
+    card.innerHTML = `
+      <div class="product-img-wrapper">
+        <div class="skeleton skeleton-img"></div>
+      </div>
+      <div class="product-details">
+        <div class="skeleton skeleton-rating"></div>
+        <div class="skeleton skeleton-name"></div>
+        <div class="skeleton skeleton-name" style="width: 70%"></div>
+        <div class="skeleton skeleton-price"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
+    `;
+    productGrid.appendChild(card);
   }
 }
 

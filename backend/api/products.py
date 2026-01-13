@@ -5,8 +5,6 @@ from pydantic import BaseModel
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
 
-# Original prices are in INR (₹)
-
 _LOADED_PRODUCTS: Dict[str, pd.DataFrame] = {}
 
 def get_available_categories() -> List[str]:
@@ -38,7 +36,6 @@ def get_df_by_category(category: str) -> Optional[pd.DataFrame]:
                 _LOADED_PRODUCTS[category] = df
                 return df
             else:
-                # Returns an empty DataFrame with correct columns if file is small
                 return pd.DataFrame(columns=['name','main_category','sub_category','image','link','ratings','no_of_ratings','discount_price','actual_price'])
         except Exception as e:
             print(f"Error loading {category}: {e}")
@@ -82,19 +79,17 @@ def get_products_summary(category: str, limit: int = 18, max_price: float = None
     
     filtered_df = df.copy()
     
-    # 1. Price Filter
     if max_price:
         filtered_df = filtered_df[filtered_df['actual_price'].apply(clean_price) <= max_price]
 
     if filtered_df.empty:
-        return "NADA_ENCONTRADO"
+        return "NOT_FOUND"
     
     products = filtered_df.head(30)
     
     summary = f"Real Products Available in category '{category}':\n"
     for _, row in products.iterrows():
         price = row.get('actual_price', '0')
-        # Using clear labels and avoiding pipes which cause extraction issues in the LLM
         summary += f"- PRODUCT_NAME: {row['name']} PRODUCT_PRICE: {price} PRODUCT_RATING: {row.get('ratings', 'N/A')} PRODUCT_IMAGE: {row.get('image', 'N/A')}\n"
     
     return summary

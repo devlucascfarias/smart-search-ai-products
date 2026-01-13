@@ -37,7 +37,7 @@ MANDATORY FORMATTING AND CONTENT RULES:
    - If user searches for "air conditioner": include ONLY air conditioners (not fans, heaters)
    - If user searches for "notebook": include ONLY notebooks (not tablets, phones, accessories)
    - BE EXTREMELY STRICT: it's better to return 0 products than include 1 irrelevant item
-   - If ALL products are irrelevant, return "NADA_ENCONTRADO"
+   - If ALL products are irrelevant, return "NOT_FOUND"
 
 8. [ITEM] FORMAT (EXTREMELY CRITICAL): 
    - Right after the paragraph, list ONLY RELEVANT products using [ITEM] tags
@@ -48,7 +48,7 @@ MANDATORY FORMATTING AND CONTENT RULES:
 CASE A: IF found RELEVANT products:
 - Analytical text + [ITEM] list with filtered products + Filters at the end.
 
-CASE B: IF "NADA_ENCONTRADO" or if NO product is relevant:
+CASE B: IF "NOT_FOUND" or if NO product is relevant:
 - Only inform that there are no items for **{query}**.
 
 MANDATORY FORMAT FOR EACH PRODUCT:

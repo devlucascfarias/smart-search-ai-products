@@ -71,10 +71,8 @@ class PromptRequest(BaseModel):
 @app.post("/generate")
 async def generate_text(request: PromptRequest):
     try:
-        # Intent Analysis
         parser = JsonOutputParser(pydantic_object=AnalysisResult)
         
-        # Load category analysis prompt from external file
         analysis_template = prompt_manager.load_prompt("category_analysis")
         
         analysis_prompt = PromptTemplate(
@@ -92,15 +90,13 @@ async def generate_text(request: PromptRequest):
         max_price = request.budget or analysis_data.get("budget")
         relevant_categories = [cat for cat in analysis_data.get("categories", []) if cat in ALL_CATEGORIES]
 
-        # Real Data Search
         context_data = ""
         if relevant_categories:
             for cat in relevant_categories[:5]: 
                 summary = get_products_summary(cat, limit=18, max_price=max_price, search_query=request.prompt)
-                if summary and "NADA_ENCONTRADO" not in summary:
+                if summary and "NOT_FOUND" not in summary:
                     context_data += summary + "\n"
         
-        # If nothing found, return friendly message
         if not context_data or context_data.strip() == "":
             return {
                 "response": f"Sorry, we couldn't find available products for **{request.prompt}** at the moment. Try refining your search or explore our categories.",
@@ -108,12 +104,10 @@ async def generate_text(request: PromptRequest):
                 "queried_categories": relevant_categories
             }
         
-        # Final Response Generation
         budget_info = f" (with budget up to {max_price})" if max_price else ""
         
         relevant_cat_name = relevant_categories[0] if relevant_categories else "our categories"
 
-        # Load response generation prompt from external file
         response_template = prompt_manager.load_prompt("response_generation")
         
         final_prompt = PromptTemplate(
@@ -125,7 +119,7 @@ async def generate_text(request: PromptRequest):
         
         response = final_chain.invoke({
             "query": request.prompt,
-            "context": context_data if context_data else "NADA_ENCONTRADO",
+            "context": context_data if context_data else "NOT_FOUND",
             "budget_info": budget_info,
             "relevant_category_name": relevant_cat_name
         })
